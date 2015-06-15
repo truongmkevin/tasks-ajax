@@ -16,18 +16,19 @@ class UserTasksController < ApplicationController
   # PATCH/PUT /user_tasks/1
   # PATCH/PUT /user_tasks/1.json
   def update
-    respond_to do |format|
-      if @user_task.update(user_task_params)
-        format.html { redirect_to @user_task, notice: 'User task was successfully updated.' }
-        format.json { render :show, status: :ok, location: @user_task }
-      else
-        format.html { render :edit }
-        format.json { render json: @user_task.errors, status: :unprocessable_entity }
-      end
-    end
+    @user_task.update(user_task_params)
+  end
+
+  def destroy
+    @user_task.destroy
   end
 
   private
+
+    def all_tasks
+      @user_tasks = UserTask.all
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_user_task
       @user_task = UserTask.find(params[:id])
@@ -38,7 +39,4 @@ class UserTasksController < ApplicationController
       params.require(:user_task).permit(:description, :due)
     end
 
-    def all_tasks
-      @user_task = UserTask.new
-    end
 end
